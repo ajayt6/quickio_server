@@ -20,6 +20,23 @@ io.on('connection', function(socket){
     io.emit('chat message', msg);
     console.log('chat message', msg);
   });
+  socket.on('add user passkey', function(msg) {
+  	app.set('passKey',msg);
+	console.log('passKey is ' + msg);
+});
+ socket.on('confirm user passkey', function(msg) {
+        if(app.settings.passKey == msg)
+        {
+		console.log('Its a pass yo');
+		io.emit('user joined', '921 you are right');
+	}
+	else
+	{	
+	console.log('Its a miss');
+	console.log('The original passkey is' + app.settings.passKey);
+	console.log('The confirmRequest passkey is' + msg);
+	}
+});
   socket.on('add user', function(msg){
     if(msg == "YourMamaSoDumb")
 	{
