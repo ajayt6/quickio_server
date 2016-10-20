@@ -28,14 +28,47 @@ io.on('connection', function(socket){
         if(app.settings.passKey == msg)
         {
 		console.log('Its a pass yo');
-		io.emit('user joined', '921 you are right');
-	}
-	else
-	{	
-	console.log('Its a miss');
-	console.log('The original passkey is' + app.settings.passKey);
-	console.log('The confirmRequest passkey is' + msg);
-	}
+		socket.emit('user joined', '921 you are right');
+        console.log('Going to use secure channel');
+        console.log('The session id is ' + socket.id);
+
+        socket.on('secure message', function(msg){
+            if(msg == "YourMamaSoDumb")
+            {
+                io.emit('user joined', msg+' joined yoyo');
+                console.log('user added yo and the username is ', msg);
+                socket.broadcast.emit('chat message','Yo the kid authenticated alright');
+            }
+            else  if(msg.includes("921") == true) //== "Music")
+            {
+                io.emit('user joined', msg+' joined yoyo');
+                console.log('received', msg);
+                socket.broadcast.emit('chat message',msg);
+            }
+            else  if(msg.includes("pass") == true) //== "Music")
+            {
+                console.log('received', msg);
+                socket.broadcast.emit('chat message',msg);
+            }
+
+            else  if(msg.includes("yahoo") == true) //== "Music")
+            {
+                //io.emit('user joined', msg+' joined yoyo');
+                console.log('Opening', msg);
+                socket.broadcast.emit('chat message',msg);
+            }
+
+            else
+                console.log('user login wrong yo');
+        });
+
+	    }
+        else
+        {
+        console.log('Its a miss');
+        console.log('The original passkey is' + app.settings.passKey);
+        console.log('The confirmRequest passkey is' + msg);
+        }
 });
   socket.on('add user', function(msg){
     if(msg == "YourMamaSoDumb")
