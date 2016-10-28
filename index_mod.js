@@ -98,14 +98,7 @@ io.on('connection', function(socket){
     //socket.broadcast.to(sessionMap.get(socket.id)).emit('chat message', msg);
 
       console.log('Secure message received and going to broadcast to: ' + sessionMap.get(socket.id));
-    if(msg == "YourMamaSoDumb")
-	{
-    	io.emit('user joined', msg+' joined yoyo');
-    	console.log('user added yo and the username is ', msg);
-        socket.broadcast.to(sessionMap.get(socket.id)).emit('chat message', msg);
-        //socket.broadcast.emit('chat message','Yo the kid authenticated alright');
-	}
-    else  if(msg.includes("921") == true) //== "Music")
+    if(msg.includes("921") == true) //== "Music")
         {
         io.emit('user joined', msg+' joined yoyo');
         console.log('received', msg);
