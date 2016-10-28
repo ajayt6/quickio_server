@@ -1,7 +1,7 @@
 {
-  "name": "socket-chat-example",
-  "version": "0.0.1",
-  "description": "my first socket.io app",
+  "name": "Quicky server",
+  "version": "0.0.2",
+  "description": "Quicky server for remote fingerprint authentication",
   "dependencies": {
     "express": "^4.10.2",
     "socket.io": "^1.5.0"
