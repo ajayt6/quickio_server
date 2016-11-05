@@ -1,8 +1,9 @@
 {
-  "name": "Quicky server",
+  "name": "Quicky_server",
   "version": "0.0.2",
   "description": "Quicky server for remote fingerprint authentication",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.10.2",
     "socket.io": "^1.5.0"
   }

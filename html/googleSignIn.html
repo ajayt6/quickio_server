@@ -1,0 +1,67 @@
+<html lang="en">
+  <head>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="197645789472-45oeh2qlq57m3l1iqssqcl2s5cnceqdl.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" async defer></script>
+  </head>
+  <body>
+    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    <form>
+    <input id="secretkey" type="password">
+    <input type="submit" value="OK">
+    </form>
+    <script>
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        var email = profile.getEmail();
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+
+
+
+        $.when(id_token,email).then(function() {
+          //var event = document.createEvent('Event');
+
+          console.log("The id token is: "+ id_token);
+          document.forms[0].onsubmit = function(e) {
+            var secretkey = document.getElementById('secretkey').value;
+            alert("secret key value is: " + secretkey);
+            var event = new CustomEvent("Quicky_login", {"detail": {"email":email, "id_token": id_token, "secretkey": secretkey}});
+            //event.initEvent('Quicky_login');
+            document.dispatchEvent(event);
+
+          }
+
+        });
+
+        var xhr = new XMLHttpRequest();
+        var url = 'http://ec2-52-42-76-33.us-west-2.compute.amazonaws.com:3000/signinVerificationPOST';
+        var data = JSON.stringify({"email":profile.getEmail(),"id_token":id_token});
+        xhr.open('POST',url,true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        console.log("the request url is: " + url);
+        //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        //xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        //xhr.send(JSON.stringify({idtoken:id_token, email:profile.getEmail()}));
+
+        xhr.onload = function() {
+          console.log('Signed in as: ' + xhr.responseText);
+        };
+        xhr.send(data);
+        //xhr.send('idtoken=' + id_token);
+
+        //xhr.send('emailID=' + profile.getEmail());
+      };
+    </script>
+  </body>
+</html>
